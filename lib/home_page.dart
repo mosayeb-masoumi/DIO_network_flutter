@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio_network/constant.dart';
-import 'package:dio_network/model.dart';
+import 'package:dio_network/models/country_model.dart';
+import 'models/model.dart';
 import 'package:dio_network/network.dart';
 import 'package:dio_network/publisher_model.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   @override
   void initState() {
-    getList();
     super.initState();
   }
 
@@ -22,7 +23,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text("text"),
+
+        child: Container(
+          margin: EdgeInsets.only(top: 50),
+          child: Column(
+            children: [
+              RaisedButton(
+                child: Text("Get list"),
+                  onPressed: (){
+                    getList();
+                  }),
+              SizedBox(height: 20,),
+              RaisedButton(
+                  child: Text("Get Object"),
+                  onPressed: (){
+                    getCountryName();
+                  }),
+              SizedBox(height: 20,),
+
+            ],
+          ),
+        )
       ),
     );
   }
@@ -39,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     print(response?.data);
     if(response?.statusCode == 200) {
 
-      // var list = (response?.data as List).map((x) => MyModel.fromJson(x)).toList();
+      var list = (response?.data as List).map((x) => MyModel.fromJson(x)).toList();
       return (response?.data as List)
           .map((x) => MyModel.fromJson(x))
           .toList();
@@ -50,6 +71,25 @@ class _HomePageState extends State<HomePage> {
   }
 
 
+  Future<CountryModel> getCountryName() async {
+
+    var dio = DioUtil.getInstance();
+    final String apiUrl = ("https://freegeoip.app/json/");
+    final response = await dio?.get(apiUrl);
+    print(response?.data);
+    if(response?.statusCode == 200) {
+      var object = response?.data;
+      var name = object["country_name"];
+      var dd = name;
+      return  response?.data;
+
+    } else {
+      throw Exception("Failed to Load Detail Restaurant, Please Check Your Internet");
+    }
+  }
+
 
 
 }
+
+
