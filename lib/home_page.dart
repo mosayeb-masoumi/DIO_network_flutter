@@ -56,18 +56,20 @@ class _HomePageState extends State<HomePage> {
 
     var dio = DioUtil.getInstance();
     final String apiUrl = (Constant.BASE_PATH + "publisher/");
-    final response = await dio?.get(apiUrl);
-    print(response?.data);
-    if(response?.statusCode == 200) {
 
-      var list = (response?.data as List).map((x) => MyModel.fromJson(x)).toList();
-      return (response?.data as List)
-          .map((x) => MyModel.fromJson(x))
-          .toList();
+      final response = await dio?.get(apiUrl);
+      print(response?.data);
+      if(response?.statusCode == 200) {
 
-    } else {
-      throw Exception("Failed to Load Detail Restaurant, Please Check Your Internet");
-    }
+        var list = (response?.data as List).map((x) => MyModel.fromJson(x)).toList();
+        return (response?.data as List)
+            .map((x) => MyModel.fromJson(x))
+            .toList();
+
+      } else {
+        throw Exception("Failed to Load Detail Restaurant, Please Check Your Internet");
+      }
+
   }
 
 
@@ -77,6 +79,8 @@ class _HomePageState extends State<HomePage> {
     final String apiUrl = ("https://freegeoip.app/json/");
     final response = await dio?.get(apiUrl);
     print(response?.data);
+
+
     if(response?.statusCode == 200) {
       var object = response?.data;
       var name = object["country_name"];
